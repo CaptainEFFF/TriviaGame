@@ -1,0 +1,19 @@
+#logo{
+    height: 250px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}
+
+.display-4{
+    text-align: center;
+}
+
+.btn{
+    margin-left: 15px ;
+    margin-right: 15px ;
+}
+
+
+
