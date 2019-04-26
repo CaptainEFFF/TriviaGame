@@ -125,54 +125,67 @@ var x = 0;
 
 
 
-function question(){
-
+function displayQuestion(){
     var q = trivia[x].question
     console.log(q);
-
     $('#trivia').empty();
     $('#trivia').html("<p>" + q + "</p>");
-    
-
     var a = trivia[x].answers
     for (var i = 0; i < a.length; i++){
         console.log(a[i]);
         btn = $('<button>');
         btn.html(a[i]);
-        btn.addClass('btn btn-primary btn-lg');
+        btn.addClass('btn btn-primary btn-lg answer');
         $('#trivia').append(btn);
-
-
     }
-
-
 }
 
 
 
-question()
 
-
-    
-
-    $(".btn").on("click",function(){
+// $(".answer").on("click",function answerClicked(){
+    function checker(){
         console.log("Clicked")
         console.log($(this).text());
         console.log(trivia[x].correctAnswer)
+        
         if ($(this).text() === trivia[x].correctAnswer){
             console.log("Correct!");
             console.log(trivia[x].answers.indexOf($(this).text()));
             var index = trivia[x].answers.indexOf($(this).text())
             console.log(trivia[x].factoids[index]);
             correct ++;
-    }
-    
+            $('#trivia').html("<p>" + trivia[x].factoids[index] + "</p> </br>");
+            var photo = $('<img>')
+            $(photo).attr("src",trivia[x].Image[index]);
+            $(photo).addClass("photo");
+            $('#trivia').append(photo);
+            btn = $('<button>');
+            btn.html("Next");
+            btn.addClass('btn btn-primary btn-lg');
+            $('#trivia').append(btn);
+            x++;
+        }
+        
         else{
             console.log("Wrong");
             console.log(trivia[x].answers.indexOf($(this).text()));
             var index = trivia[x].answers.indexOf($(this).text())
             console.log(trivia[x].factoids[index]);
             wrong ++;
-
+            $('#trivia').html("<p>" + trivia[x].factoids[index] + "</p>");
+            var photo = $('<img>')
+            $(photo).attr("src",trivia[x].Image[index]);
+            $(photo).addClass("photo");
+            $('#trivia').append(photo);
+            x++;
+            
         }
+    };
+    $(".start").on("click",function(){
+        displayQuestion()
     });
+    
+    $(document).on("click",".answer",checker());
+    
+    
