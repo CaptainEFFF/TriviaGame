@@ -189,3 +189,4 @@ function displayQuestion(){
     $(document).on("click",".answer",checker());
     
     
+    
