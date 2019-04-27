@@ -152,7 +152,13 @@ function timed(){
         timerStop();
         $("#trivia").empty();
         $('#trivia').html("<h1> Missed That One! </h1>");
-        setTimeout(displayQuestion,3000);
+        var index = trivia[x].answers.indexOf(trivia[x].correctAnswer);
+        $('#trivia').append("<h3>" + trivia[x].factoids[index] + "</h3> </br>");
+        var photo = $('<img>')
+        $(photo).attr("src",trivia[x].Image[index]);
+        $(photo).addClass("photo");
+        $('#trivia').append(photo);
+        setTimeout(displayQuestion,5000);
         x++;
         missed++;
     }
@@ -165,28 +171,46 @@ function timerStop(){
 }
 
 
+function resetGame(){
+    $('#trivia').empty();
+    $('#trivia').html("<h3> There are 10 questions and you will have 10 seconds each to answer them all, can you get all 10 right?</h3>");
+    btn = $('</br> </br> <button>');
+    btn.html("Start");
+    btn.addClass('btn btn-primary btn-lg start');
+    $('#trivia').append(btn);
+    correct = 0;
+    wrong = 0;
+    missed = 0;
+    x = 0;
 
+
+}
 
 
 function displayQuestion(){
+
+    $("#logo").height(100);
+    $("#logo").width('50%');
    
    if(x===10){
     $('#trivia').empty();
     $('#trivia').html("<h1> You got " + correct + " correct.</h1>");
     $('#trivia').append("<h1> You got " + wrong + " wrong.</h1>");
     $('#trivia').append("<h1> You missed " + missed + " questions.</h1>");
+    btn = $('</br> </br> <button>');
+    btn.html("Play Again?");
+    btn.addClass('btn btn-primary btn-lg reset');
+    $('#trivia').append(btn);
    }
    
    
    else{
     var q = trivia[x].question
-    console.log(q);
     timerStart();
     $('#trivia').empty();
-    $('#trivia').html("<p>" + q + "</p>");
+    $('#trivia').html("<h3>" + q + "</h3>");
     var a = trivia[x].answers
     for (var i = 0; i < a.length; i++){
-        console.log(a[i]);
         btn = $('<button>');
         btn.html(a[i]);
         btn.addClass('btn btn-primary btn-lg answer');
@@ -202,46 +226,30 @@ function displayQuestion(){
 // $(".answer").on("click",function answerClicked(){
     function checker(){
         var clickedButton = $(this).attr("data-name")
-        console.log("Clicked");
-        console.log("Name " + clickedButton);
-        console.log(trivia[x].correctAnswer)
-        console.log("Question: " + x);
        
         if ($(this).attr("data-name") === trivia[x].correctAnswer){
             timerStop();
-            console.log("Correct!");
-            console.log(trivia[x].answers.indexOf($(this).text()));
             var index = trivia[x].answers.indexOf($(this).text())
-            console.log(trivia[x].factoids[index]);
             correct ++;
-            $('#trivia').html("<p>" + trivia[x].factoids[index] + "</p> </br>");
+            $('#trivia').html("<h3>" + trivia[x].factoids[index] + "</h3> </br>");
             var photo = $('<img>')
             $(photo).attr("src",trivia[x].Image[index]);
             $(photo).addClass("photo");
             $('#trivia').append(photo);
-            btn = $('</br> </br> <button>');
-            btn.html("Next");
-            btn.addClass('btn btn-primary btn-lg next');
-            $('#trivia').append(btn);
+            setTimeout(displayQuestion,5000);
             x++;
         }
         
         else{
             timerStop();
-            console.log("Wrong");
-            console.log(trivia[x].answers.indexOf($(this).text()));
             var index = trivia[x].answers.indexOf($(this).text())
-            console.log(trivia[x].factoids[index]);
             wrong ++;
-            $('#trivia').html("<p>" + trivia[x].factoids[index] + "</p>");
+            $('#trivia').html("<h3>" + trivia[x].factoids[index] + "</h3>");
             var photo = $('<img>')
             $(photo).attr("src",trivia[x].Image[index]);
             $(photo).addClass("photo");
             $('#trivia').append(photo);
-            btn = $('</br> </br> <button>');
-            btn.html("Next");
-            btn.addClass('btn btn-primary btn-lg next');
-            $('#trivia').append(btn);
+            setTimeout(displayQuestion,5000);
             x++;
             
         }
@@ -251,7 +259,8 @@ function displayQuestion(){
     });
     
     $(document).on("click",".answer",checker);
-    $(document).on("click",".next",displayQuestion,);
+    $(document).on("click",".reset",resetGame,);
+    $(document).on("click",".start",displayQuestion,);
     
     
     
